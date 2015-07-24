@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.egcc.ventas.dao.espec.ProductoMapper">
+
+	<select id="traerTodos" resultType="ProductoBean">
+		select p.idprod, p.idcat,
+		p.nombre, p.precio, p.stock, c.nombre categoria
+		from producto p join
+		categoria c on p.idcat = c.idcat
+	</select>
+
+	<insert id="insertar" parameterType="ProductoBean"
+		useGeneratedKeys="true" keyColumn="idprod" keyProperty="idprod">
+		insert into producto(idcat,nombre,precio,stock)
+		values(#{idcat},#{nombre},#{precio},#{stock})
+		<selectKey keyProperty="idprod" resultType="Integer" order="AFTER" >
+			select last_insert_id() as idprod
+		</selectKey>
+	</insert>
+
+  <select id="traerCategorias" resultType="CategoriaBean">
+    select idcat, nombre
+    from categoria
+  </select>
+  
+</mapper>
